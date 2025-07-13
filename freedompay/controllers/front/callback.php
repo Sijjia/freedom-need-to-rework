@@ -86,53 +86,38 @@ class FreedomPayCallbackModuleFrontController extends ModuleFrontController
         die('OK');
     }
 
-        private function validateSignature(array $data)
+    private function validateSignature(array $data)
     {
         if (empty($data['pg_sig'])) {
             $this->log('⛔ Missing pg_sig', true);
             return false;
         }
-        
+
         $received = $data['pg_sig'];
-        unset($data['pg_sig']);
-    
-        // 1) Оставляем только pg_ поля, кроме двух ненужных:
-        $fields = array_filter(
-            $data,
-            function($key) {
-                return strpos($key, 'pg_') === 0
-                    && $key !== 'pg_need_phone_notification'
-                    && $key !== 'pg_need_email_notification';
-            },
-            ARRAY_FILTER_USE_KEY
-        );
-    
-        // 2) Сортируем по имени ключа (ASCII)
-        ksort($fields);
-    
-        // 3) Берём значения
-        $values = array_values($fields);
-    
-        // 4) Префикс — 'callback'
-        array_unshift($values, 'callback');
-    
-        // 5) Добавляем секретный ключ в конец
+        unset($data['pg_sig']); // Убираем pg_sig перед подписью
+
+        // Сортировка всех оставшихся ключей
+        ksort($data);
+
+        $signParts = ['callback'];
+        foreach ($data as $value) {
+            $signParts[] = (string)$value;
+        }
+
+        // Добавляем секрет в конец
         $secret = Configuration::get('FREEDOMPAY_MERCHANT_SECRET');
-        $values[] = $secret;
-    
-        // 6) Объединяем в строку и считаем MD5
-        $signString = implode(';', $values);
+        $signParts[] = $secret;
+
+        // Склеиваем и генерим подпись
+        $signString = implode(';', $signParts);
         $generated  = md5($signString);
-    
-        // Детальное логирование
+
+        // Лог
         $this->log("🔐 Signature details:");
-        $this->log("  Fields: " . print_r($fields, true));
-        $this->log("  Values: " . print_r($values, true));
         $this->log("  Sign string: $signString");
         $this->log("  Generated: $generated");
         $this->log("  Received: $received");
-        $this->log("  Secret: $secret");
-    
+
         return ($generated === $received);
     }
 
