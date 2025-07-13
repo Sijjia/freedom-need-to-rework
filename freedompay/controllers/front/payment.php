@@ -161,8 +161,23 @@ class FreedomPayPaymentModuleFrontController extends ModuleFrontController
         $this->log("Payment data: " . print_r($paymentData, true));
 
         // Generate signature
+        // Убираем подпись, если уже есть
+        if (isset($paymentData['pg_sig'])) {
+            unset($paymentData['pg_sig']);
+        }
+        
+        // Сортировка по ключам
         ksort($paymentData);
-        $signString = 'init_payment.php;' . implode(';', array_values($paymentData)) . ';' . $secret;
+        
+        // Подготовка строк для подписи
+        $signParts = ['init_payment.php'];
+        foreach ($paymentData as $key => $value) {
+            $signParts[] = (string)$value;
+        }
+        $signParts[] = $secret;
+        
+        // Финальная строка и подпись
+        $signString = implode(';', $signParts);
         $signature = md5($signString);
         $paymentData['pg_sig'] = $signature;
         
