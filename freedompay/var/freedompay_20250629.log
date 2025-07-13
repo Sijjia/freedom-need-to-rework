@@ -1,0 +1,32 @@
+[2025-06-29 00:04:14] hookPayment triggered
+[2025-06-29 00:04:14] Cart ID: 133, Customer ID: 46
+[2025-06-29 00:04:14] Is booking cart: Yes
+[2025-06-29 00:04:14] Booking total: 60
+[2025-06-29 00:04:14] Displaying payment button
+[2025-06-29 00:04:24] Payment controller initContent started
+[2025-06-29 00:04:24] Cart ID: 133, Customer ID: 46
+[2025-06-29 00:04:24] Initializing payment for cart: 133
+[2025-06-29 00:04:24] Config: merchant_id=560547, api_url=https://api.freedompay.kg, test_mode=0, total=60
+[2025-06-29 00:04:25] Generated new session token: 40f6bc554780380e7406646e50f26556
+[2025-06-29 00:04:25] Payment data: Array
+(
+    [pg_merchant_id] => 560547
+    [pg_order_id] => 133
+    [pg_amount] => 60.00
+    [pg_currency] => KGS
+    [pg_description] => Booking #133
+    [pg_salt] => 1123209067
+    [pg_success_url] => https://akbermet.kg/ru/module/freedompay/success?id_cart=133&key=88d79635d0a715515bd5435aa761479f
+    [pg_failure_url] => https://akbermet.kg/ru/order?step=3
+    [pg_result_url] => https://akbermet.kg/ru/module/freedompay/callback?session_token=40f6bc554780380e7406646e50f26556
+    [pg_testing_mode] => 0
+    [pg_need_email_notification] => 1
+    [pg_user_contact_email] => annaabra@mail.ru
+)
+
+[2025-06-29 00:04:25] Signature string: init_payment.php;60.00;KGS;Booking #133;https://akbermet.kg/ru/order?step=3;560547;1;133;https://akbermet.kg/ru/module/freedompay/callback?session_token=40f6bc554780380e7406646e50f26556;1123209067;https://akbermet.kg/ru/module/freedompay/success?id_cart=133&key=88d79635d0a715515bd5435aa761479f;0;annaabra@mail.ru;nzruCytCvMfE6tPd
+[2025-06-29 00:04:25] Generated signature: 1df647a5961ee7a046888d00552dcd1a
+[2025-06-29 00:04:25] FreedomPay response (HTTP 200): <?xml version="1.0" encoding="utf-8"?>
+<response><pg_status>ok</pg_status><pg_payment_id>1432620550</pg_payment_id><pg_redirect_url>https://customer.freedompay.kg/pay.html?customer=0197b7b6-4602-70d5-b7cc-5f7891c20bec</pg_redirect_url><pg_redirect_url_type>need data</pg_redirect_url_type><pg_salt>XTBryZaiKcA7wVjP</pg_salt><pg_sig>a02ab417b47657913eff1e14e88143c5</pg_sig></response>
+
+[2025-06-29 00:04:25] Redirecting to payment page: https://customer.freedompay.kg/pay.html?customer=0197b7b6-4602-70d5-b7cc-5f7891c20bec
